@@ -12,8 +12,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use(router);
 
-app.listen(PORT, () => {
-
+app.listen(PORT, async () => {
   const randomAmount = Math.round(Math.random() * files.length);
   const randomPeerFiles = [];
   for (let i = 0; i < randomAmount; i++) {
@@ -21,26 +20,25 @@ app.listen(PORT, () => {
     randomPeerFiles.push(files[randomFile]);
   }
 
-  new Promise((resolve, reject) => {
-    trackerClient.login({}, (err, response) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      }
-      console.log(response);
-      resolve(response);
+  try {
+    let response = await new Promise((resolve, reject) => {
+      trackerClient.login({}, (err, response) => {
+        if (err) reject(err);
+        resolve(response);
+      });
     });
-  }).then((response) => {
-    trackerClient.index(
-      { fileList: randomPeerFiles },
-      (err, response) => {
-        if (err) {
-          console.error(err);
-        }
-        console.log(response);
-      }
-    );
-  });
+    console.log(response);
+
+    response = await new Promise((resolve, reject) => {
+      trackerClient.index({ fileList: randomPeerFiles }, (err, response) => {
+        if (err) reject(err);
+        resolve(response);
+      });
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 try {

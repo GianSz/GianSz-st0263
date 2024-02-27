@@ -20,28 +20,28 @@ server.addService(peerProto.Peer.service, {
     console.log(
       `Download request for file ${file} received. Sending file data...`
     );
-    callback(null, { message: `File data sent successfully` });
+    callback(null, { message: `This is the data of the file` });
   },
-  upload: (call, callback) => {
+  upload: async (call, callback) => {
     const { fileList } = call.request;
 
     console.log(
-      "Upload request for files" + fileList + "received. Downloading file data..."
+      "Upload request for files received\nDownloading file data: " + fileList
     );
 
-    new Promise((resolve, reject) => {
-      trackerClient.index({ fileList: fileList }, (err, response) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        }
-        console.log(response);
-        resolve(response);
+    try {
+      let response = await new Promise((resolve, reject) => {
+        trackerClient.index({ fileList: fileList }, (err, response) => {
+          if (err) reject(err);
+          resolve(response);
+        });
       });
-    })
-      .then((response) => {
-        callback(null, { message: `File data uploaded successfully` });
-      });
+      console.log(response);
+      callback(null, { message: `File data uploaded successfully` });
+
+    } catch (error) {
+      console.error(error);
+    }
   },
 });
 server.bind("localhost:30043", grpc.ServerCredentials.createInsecure());

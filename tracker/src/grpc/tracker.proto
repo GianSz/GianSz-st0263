@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+service Tracker {
+    rpc Login (Empty) returns (MessageResponse) {}
+    rpc Logout (Empty) returns (MessageResponse) {}
+    rpc Search (SearchRequest) returns (SearchResponse) {}
+    rpc Index (IndexRequest) returns (MessageResponse) {}
+}
+
+message Empty {}
+
+message MessageResponse {
+    string message = 1;
+}
+
+message SearchRequest {
+    string fileName = 1;
+}
+
+message SearchResponse {
+    repeated string peers = 1;
+}
+
+message IndexRequest {
+    repeated string fileList = 1;
+}

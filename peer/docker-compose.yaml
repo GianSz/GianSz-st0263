@@ -1,0 +1,38 @@
+version: '3'
+services:
+  peer1:
+    container_name: peer1
+    image: giansz/peer
+    ports:
+      - "3000:3000"
+    networks:
+      mynet:
+        ipv4_address: 172.20.0.2
+  peer2:
+    container_name: peer2
+    image: giansz/peer
+    ports:
+      - "3001:3000"
+    networks:
+      mynet:
+        ipv4_address: 172.20.0.3
+  peer3:
+    container_name: peer3
+    image: giansz/peer
+    ports:
+      - "3002:3000"
+    networks:
+      mynet:
+        ipv4_address: 172.20.0.4
+  peer4:
+    container_name: peer4
+    image: giansz/peer
+    ports:
+      - "3003:3000"
+    networks:
+      mynet:
+        ipv4_address: 172.20.0.5
+networks:
+  mynet:
+    external:
+      name: mynet

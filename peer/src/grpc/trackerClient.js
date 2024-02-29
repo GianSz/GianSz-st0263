@@ -11,6 +11,6 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 
 const Tracker = grpc.loadPackageDefinition(packageDefinition).Tracker;
-const client = new Tracker("localhost:5000", grpc.credentials.createInsecure());
+const client = new Tracker("172.20.0.6:5000", grpc.credentials.createInsecure());
 
 module.exports = client;

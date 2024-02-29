@@ -37,6 +37,6 @@ server.addService(trackerProto.Tracker.service, {
     callback(null, { message: message });
   },
 });
-server.bind("localhost:5000", grpc.ServerCredentials.createInsecure());
+server.bind("172.20.0.6:5000", grpc.ServerCredentials.createInsecure());
 
 module.exports = server;

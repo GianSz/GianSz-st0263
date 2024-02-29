@@ -4,6 +4,8 @@ const protoLoader = require("@grpc/proto-loader");
 
 const trackerClient = require("../grpc/trackerClient");
 
+const { getIpAddress } = require("../utils/network.utils");
+
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   longs: String,
@@ -44,6 +46,8 @@ server.addService(peerProto.Peer.service, {
     }
   },
 });
-server.bind("localhost:30043", grpc.ServerCredentials.createInsecure());
+
+const ipAddress = getIpAddress();
+server.bind(ipAddress + ":5000", grpc.ServerCredentials.createInsecure());
 
 module.exports = server;

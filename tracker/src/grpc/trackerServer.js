@@ -9,6 +9,8 @@ const {
   index,
 } = require("./controllers/tracker.controllers");
 
+const { TRACKER_IP, TRACKER_PORT } = process.env;
+
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   longs: String,
@@ -37,6 +39,6 @@ server.addService(trackerProto.Tracker.service, {
     callback(null, { message: message });
   },
 });
-server.bind("172.20.0.6:5000", grpc.ServerCredentials.createInsecure());
+server.bind(`${TRACKER_IP??"localhost"}:${TRACKER_PORT??"5000"}`, grpc.ServerCredentials.createInsecure());
 
 module.exports = server;

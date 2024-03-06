@@ -41,6 +41,21 @@ app.listen(PORT, async () => {
   }
 });
 
+process.on("SIGINT", async () => {
+  try {
+    let response = await new Promise((resolve, reject) => {
+      trackerClient.logout({}, (err, response) => {
+        if (err) reject(err);
+        resolve(response);
+      });
+    });
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
+  process.exit(0);
+});
+
 try {
   peerServer.start();
   console.log("Peer server running");

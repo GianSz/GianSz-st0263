@@ -14,8 +14,7 @@ message DownloadResponse {
 }
 
 message UploadRequest {
-    string ip = 1;
-    repeated string fileList = 2;
+    repeated string fileList = 1;
 }
 
 message UploadResponse {
